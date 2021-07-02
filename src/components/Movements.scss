@@ -39,6 +39,10 @@
     tr {
       display: flex;
       width: 100%;
+
+      &:last-child {
+        margin-bottom: auto;
+      }
     }
 
     thead th {
@@ -47,10 +51,6 @@
 
     tbody td {
       border: 1px solid #ccc;
-    }
-
-    tbody tr {
-      width: 100%;
     }
 
     tbody {

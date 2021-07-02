@@ -16,6 +16,7 @@ module.exports = {
   },
   plugins: [
     'react',
+    'jest',
   ],
   rules: {
     'jsx-a11y/control-has-associated-label': 0,

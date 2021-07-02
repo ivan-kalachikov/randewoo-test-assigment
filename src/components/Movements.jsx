@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { ReactComponent as Spinner } from '../images/spinner.svg';
 import getFormattedDate from '../utilities';
 import './Movements.scss';
@@ -11,6 +12,7 @@ const Movements = () => {
   const movementsError = useSelector((state) => state.movements.error);
   const movementsStatus = useSelector((state) => state.movements.status);
   const tbodyRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (tbodyRef.current && tbodyRef.current.scrollHeight
@@ -23,7 +25,7 @@ const Movements = () => {
     <div className="movements__table-wrapper">
       <table className="movements__table">
         <caption className="movements__caption">
-          Перемещения
+          {t('ui.movements')}
           <b>
             {' '}
             {objectsList.find(({ id }) => id === Number(currentObjectId))?.name}
@@ -31,9 +33,9 @@ const Movements = () => {
         </caption>
         <thead>
           <tr>
-            <th>Дата / Время</th>
-            <th>Широта</th>
-            <th>Долгота</th>
+            <th>{t('ui.dateTime')}</th>
+            <th>{t('ui.latitude')}</th>
+            <th>{t('ui.longitude')}</th>
           </tr>
         </thead>
         <tbody ref={tbodyRef}>
