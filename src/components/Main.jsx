@@ -2,7 +2,6 @@ import React from 'react';
 import Map from './Map';
 import Objects from './Objects';
 import Movements from './Movements';
-// import MovementsPolling from './MovementsPolling';
 
 const Main = () => (
   <div className="container">

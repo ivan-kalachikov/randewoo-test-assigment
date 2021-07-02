@@ -1,4 +1,6 @@
-import { MIN_MOVEMENT_DELAY, MAX_MOVEMENT_DELAY } from '../constants';
+import {
+  MIN_MOVEMENT_DELAY, MAX_MOVEMENT_DELAY, MIN_STEP_VALUE, MAX_STEP_VALUE,
+} from '../constants';
 
 const data = [{
   timestamp: Date.now(),
@@ -11,11 +13,12 @@ const data = [{
 const genNewCoordinate = (key) => {
   const lastCoordinate = data[data.length - 1].coordinates[key];
   const getRandomOperation = () => (Math.floor(Math.random() * 2) === 0 ? '-' : '+');
-  const getRandomStep = () => parseFloat(((Math.random() * 9) * 0.0001).toFixed(7));
+  const getRandomStep = () => MIN_STEP_VALUE
+  + (Math.random() * MAX_STEP_VALUE - MIN_STEP_VALUE);
   const newCoordinate = getRandomOperation() === '-'
     ? lastCoordinate - getRandomStep()
     : lastCoordinate + getRandomStep();
-  return newCoordinate;
+  return parseFloat(newCoordinate.toFixed(7));
 };
 
 const genRequestDelay = () => MIN_MOVEMENT_DELAY
@@ -34,7 +37,7 @@ const genData = () => {
 
 const createObjectsMock = (mock) => {
   mock
-    .onGet('/api/v1/objects/1/movements')
+    .onGet(/\/api\/v1\/objects\/\d*\/movements/)
     .reply(() => new Promise((resolve) => {
       setTimeout(() => {
         resolve([200, genData()]);

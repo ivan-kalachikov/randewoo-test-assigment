@@ -1,0 +1,77 @@
+.movements {
+  position: relative;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+
+  .spinner {
+    position: absolute;
+    top: 10px;
+    right: 18px;
+  }
+
+  &__caption {
+    padding-left: 15px;
+    font-size: 22px;
+    margin-bottom: 10px;
+    text-align: left;
+    padding-right: 50px;
+  }
+
+  &__table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+
+    thead {
+      width: 100%;
+    }
+
+    td,
+    th {
+      padding: 10px 15px;
+      text-align: left;
+      flex: 1 1;
+      word-wrap: break-word;
+    }
+
+    tr {
+      display: flex;
+      width: 100%;
+    }
+
+    thead th {
+      border-bottom: 1px solid #ccc;
+    }
+
+    tbody td {
+      border: 1px solid #ccc;
+    }
+
+    tbody tr {
+      width: 100%;
+    }
+
+    tbody {
+      display: flex;
+      flex-wrap: wrap;
+      overflow: auto;
+      max-height: 200px;
+      width: 100%;
+
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: #ccc;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #444;
+        border-radius: 20px;
+      }
+    }
+  }
+}

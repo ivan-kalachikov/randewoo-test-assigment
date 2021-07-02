@@ -22,5 +22,6 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 0,
     'no-param-reassign': ['error', { props: false }],
     'react/prop-types': 0,
+    'no-underscore-dangle': 0,
   },
 };

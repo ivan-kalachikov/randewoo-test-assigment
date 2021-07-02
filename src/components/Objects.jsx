@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncActions, actions } from '../slices';
+import { ReactComponent as Spinner } from '../images/spinner.svg';
+import './Objects.scss';
 
 const Objects = () => {
   const dispatch = useDispatch();
@@ -22,8 +24,17 @@ const Objects = () => {
 
   return (
     <div className="objects">
+      {objectsStatus === 'pending' && <Spinner className="spinner" />}
       <label className="objects__label" htmlFor="objectSelect">Объект для отслеживания:</label>
-      <select onChange={handleSelect} className="objects__select" required id="objectSelect" defaultValue="placeholder" name="objectSelect">
+      <select
+        onChange={handleSelect}
+        className="objects__select"
+        disabled={objectsStatus === 'pending'}
+        required
+        id="objectSelect"
+        defaultValue="placeholder"
+        name="objectSelect"
+      >
         <option value="placeholder" disabled hidden>Выберите объект для отслеживания</option>
         {objectsList.map((object) => (
           <option key={object?.id} value={object?.id}>{object.name}</option>

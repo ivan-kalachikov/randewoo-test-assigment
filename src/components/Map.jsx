@@ -1,30 +1,53 @@
-import React from 'react';
-import GoogleMapReact from 'google-map-react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import {
+  MapContainer, TileLayer, Marker, Popup, Polyline,
+} from 'react-leaflet';
+import { latLngBounds } from 'leaflet';
+import getFormattedDate from '../utilities';
+import './Map.scss';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const center = [55.7537583, 37.6198118];
 
-export default function SimpleMap() {
-  const defaultProps = {
-    center: {
-      lat: 10.99835602,
-      lng: 77.01502627,
-    },
-    zoom: 11,
-  };
+const Map = () => {
+  const [map, setMap] = useState(null);
+  const movementsList = useSelector((state) => state.movements.list);
+
+  const movementsCoordinates = useMemo(() => movementsList.map(({ coordinates }) => {
+    const { latitude, longitude } = coordinates;
+    return [latitude, longitude];
+  }), [movementsList]);
+
+  const bounds = useMemo(() => movementsList.reduce((acc, { coordinates }) => {
+    const { latitude, longitude } = coordinates;
+    return acc.extend([latitude, longitude]);
+  }, latLngBounds()), [movementsCoordinates]);
+
+  useEffect(() => {
+    if (map && bounds._northEast) {
+      map.fitBounds(bounds, { padding: [20, 20] });
+    }
+  }, [map, bounds]);
 
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: '' }}
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
-      >
-        <AnyReactComponent
-          lat={59.955413}
-          lng={30.337844}
-          text="My Marker"
-        />
-      </GoogleMapReact>
-    </div>
+    <MapContainer center={center} zoom={16} whenCreated={setMap}>
+      <TileLayer
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {movementsList.length > 0 && movementsList.map((item) => (
+        <Marker
+          position={[item.coordinates.latitude, item.coordinates.longitude]}
+          key={item.timestamp}
+        >
+          <Popup>
+            <span>{getFormattedDate(item.timestamp)}</span>
+          </Popup>
+        </Marker>
+      ))}
+      <Polyline positions={movementsCoordinates} />
+    </MapContainer>
   );
-}
+};
+
+export default Map;
