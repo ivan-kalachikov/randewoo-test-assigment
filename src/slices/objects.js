@@ -4,7 +4,7 @@ import routes from '../routes';
 
 export const getObjects = createAsyncThunk(
   'objects/fetch',
-  async (thunkAPI) => {
+  async (_, thunkAPI) => {
     const url = routes.objects();
     try {
       const response = await axios.get(url);
