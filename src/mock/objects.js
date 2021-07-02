@@ -7,7 +7,7 @@ const data = {
 };
 
 const createObjectsMock = (mock) => {
-  mock.onGet('/api/v11/objects').reply(() => new Promise((resolve) => {
+  mock.onGet('/api/v1/objects').reply(() => new Promise((resolve) => {
     setTimeout(() => {
       resolve([200, data]);
     }, 1000);
