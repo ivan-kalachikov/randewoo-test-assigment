@@ -1,5 +1,5 @@
 import { waitFor, waitForElementToBeRemoved } from '@testing-library/dom';
-import { findAllByRole, getByRole, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import mockAxios from 'jest-mock-axios'
 import routes from '../routes';
@@ -10,7 +10,7 @@ import ru from '../locales/ru'
 
 beforeEach(async () => {
   jest.useFakeTimers();
-  render(await initApp(0));
+  render(await initApp());
 });
 
 afterEach(() => {
@@ -54,20 +54,22 @@ test('options - fetching failed - show feedback', async () => {
 });
 
 test('options - select option', async () => {
-  const spinner = await screen.findByRole('status');
   const selectElement = await screen.findByDisplayValue(ru.translation.ui.objectsPlaceholder);
   mockAxios.mockResponseFor(routes.objects(), { data });
-  await waitForElementToBeRemoved(spinner);
+  await waitFor(() => {
+    expect(selectElement).not.toBeDisabled();
+  });
   userEvent.selectOptions(selectElement, data.data[0].name);
   const expectSelectedOption = await screen.findByText(data.data[0].name);
   expect(expectSelectedOption.selected).toBeTruthy();
 });
 
 test('movements - send correct request', async () => {
-  const spinner = await screen.findByRole('status');
   const selectElement = await screen.findByDisplayValue(ru.translation.ui.objectsPlaceholder);
   mockAxios.mockResponseFor(routes.objects(), { data });
-  await waitForElementToBeRemoved(spinner);
+  await waitFor(() => {
+    expect(selectElement).not.toBeDisabled();
+  });
   userEvent.selectOptions(selectElement, data.data[0].name);
   // fetch objects data, render and select the first one option in select
 
@@ -75,10 +77,11 @@ test('movements - send correct request', async () => {
 });
 
 // test('movements - render table', async () => {
-//   const spinner = await screen.findByRole('status');
 //   const selectElement = await screen.findByDisplayValue(ru.translation.ui.objectsPlaceholder);
 //   mockAxios.mockResponseFor(routes.objects(), { data });
-//   await waitForElementToBeRemoved(spinner);
+//   await waitFor(() => {
+//     expect(selectElement).not.toBeDisabled();
+//   })
 //   userEvent.selectOptions(selectElement, data.data[0].name);
 //   // fetch objects data, render and select the first one option in select
 

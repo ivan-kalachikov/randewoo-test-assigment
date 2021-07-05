@@ -1,5 +1,7 @@
 # Randewoo Test Assessment
 
+![CI](https://github.com/Ivankalachikov/randewoo-test-assessment/workflows/CI/badge.svg)
+
 Задеплоено на heroku: http://randewoo-test-assessment.herokuapp.com/
 
 Приложение было создано с [Create React App](https://github.com/facebook/create-react-app).
