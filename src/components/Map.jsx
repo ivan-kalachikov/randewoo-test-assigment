@@ -13,18 +13,29 @@ const Map = () => {
   const [map, setMap] = useState(null);
   const movementsList = useSelector((state) => state.movements.list);
 
-  const movementsCoordinates = useMemo(() => movementsList.map(({ coordinates }) => {
-    const { latitude, longitude } = coordinates;
-    return [latitude, longitude];
-  }), [movementsList]);
+  const movementsCoordinates = useMemo(() => {
+    if (movementsList && movementsList.length) {
+      return movementsList.map(({ coordinates }) => {
+        const { latitude, longitude } = coordinates;
+        return [latitude, longitude];
+      });
+    }
+    return null;
+  }, [movementsList]);
 
-  const bounds = useMemo(() => movementsList.reduce((acc, { coordinates }) => {
-    const { latitude, longitude } = coordinates;
-    return acc.extend([latitude, longitude]);
-  }, latLngBounds()), [movementsCoordinates]);
+  const bounds = useMemo(() => {
+    if (movementsList && movementsList.length) {
+      return movementsList.reduce((acc, { coordinates }) => {
+        const { latitude, longitude } = coordinates;
+        return acc.extend([latitude, longitude]);
+      },
+      latLngBounds());
+    }
+    return null;
+  }, [movementsCoordinates]);
 
   useEffect(() => {
-    if (map && bounds._northEast) {
+    if (map && bounds?._northEast) {
       map.fitBounds(bounds, { padding: [20, 20] });
     }
   }, [map, bounds]);
@@ -35,7 +46,7 @@ const Map = () => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {movementsList.length > 0 && movementsList.map((item) => (
+      {movementsList?.length > 0 && movementsList.map((item) => (
         <Marker
           position={[item.coordinates.latitude, item.coordinates.longitude]}
           key={item.timestamp}
@@ -45,7 +56,7 @@ const Map = () => {
           </Popup>
         </Marker>
       ))}
-      <Polyline positions={movementsCoordinates} />
+      {movementsCoordinates?.length > 0 && <Polyline positions={movementsCoordinates} />}
     </MapContainer>
   );
 };

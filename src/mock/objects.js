@@ -15,3 +15,5 @@ const createObjectsMock = (mock) => {
 };
 
 export default createObjectsMock;
+
+export { data };

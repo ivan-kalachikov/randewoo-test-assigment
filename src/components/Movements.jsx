@@ -1,25 +1,24 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as Spinner } from '../images/spinner.svg';
 import getFormattedDate from '../utilities';
 import './Movements.scss';
 
-const Movements = () => {
-  const objectsList = useSelector((state) => state.objects.list);
-  const currentObjectId = useSelector((state) => state.objects.currentId);
-  const movementsList = useSelector((state) => state.movements.list);
-  const movementsError = useSelector((state) => state.movements.error);
-  const movementsStatus = useSelector((state) => state.movements.status);
+const offsetFromBottomToEnableAutoscroll = 70;
+
+const Movements = ({
+  objectsList, currentObjectId, movementsList, movementsError, movementsStatus,
+}) => {
   const tbodyRef = useRef(null);
   const { t } = useTranslation();
 
   useEffect(() => {
     if (tbodyRef.current && tbodyRef.current.scrollHeight
-       - (tbodyRef.current.scrollTop + tbodyRef.current.clientHeight) < 70) {
+       - (tbodyRef.current.scrollTop + tbodyRef.current.clientHeight)
+       < offsetFromBottomToEnableAutoscroll) {
       tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
     }
-  }, [movementsList]);
+  }, [movementsList, tbodyRef]);
 
   const renderTable = () => (
     <div className="movements__table-wrapper">
@@ -40,7 +39,7 @@ const Movements = () => {
         </thead>
         <tbody ref={tbodyRef}>
           {movementsList.map((item) => (
-            <tr key={item.timestamp}>
+            <tr role="row" key={item.timestamp}>
               <td>{getFormattedDate(item.timestamp)}</td>
               <td>{item?.coordinates?.latitude}</td>
               <td>{item?.coordinates?.longitude}</td>
@@ -53,9 +52,9 @@ const Movements = () => {
 
   return (
     <div className="movements">
-      {movementsStatus === 'pending' && <Spinner className="spinner" />}
+      {movementsStatus === 'pending' && <Spinner className="spinner" role="status" />}
       {movementsList?.length > 0 && renderTable()}
-      {movementsStatus === 'error' && movementsError && <div className="error">{movementsError}</div>}
+      {movementsStatus === 'error' && movementsError && <div className="error" role="alert">{movementsError}</div>}
     </div>
   );
 };

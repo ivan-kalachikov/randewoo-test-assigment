@@ -1,48 +1,44 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { asyncActions, actions } from '../slices';
 import { ReactComponent as Spinner } from '../images/spinner.svg';
 import './Objects.scss';
 
-const Objects = () => {
+const Objects = ({ objectsList, objectsError, objectsStatus }) => {
   const dispatch = useDispatch();
-  const objectsList = useSelector((state) => state.objects.list);
-  const objectsError = useSelector((state) => state.objects.error);
-  const objectsStatus = useSelector((state) => state.objects.status);
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (objectsList.length === 0) {
+    if (objectsList?.length === 0) {
       dispatch(asyncActions.getObjects());
     }
-  }, [dispatch, asyncActions]);
+  }, [dispatch, asyncActions, objectsList]);
 
   const handleSelect = (e) => {
     const { value: id } = e.target;
     dispatch(actions.setCurrentObjectId({ id }));
-    dispatch(asyncActions.getMovements(id));
   };
 
   return (
     <div className="objects">
-      {objectsStatus === 'pending' && <Spinner className="spinner" />}
+      {objectsStatus === 'pending' && <Spinner className="spinner" role="status" />}
       <label className="objects__label" htmlFor="objectSelect">{t('ui.objectsLabel')}</label>
       <select
         onChange={handleSelect}
         className="objects__select"
-        disabled={objectsStatus === 'pending'}
+        disabled={objectsStatus !== 'successful'}
         required
         id="objectSelect"
         defaultValue="placeholder"
         name="objectSelect"
       >
         <option value="placeholder" disabled hidden>{t('ui.objectsPlaceholder')}</option>
-        {objectsList.map((object) => (
+        {objectsList?.length > 0 && objectsList.map((object) => (
           <option key={object?.id} value={object?.id}>{object.name}</option>
         ))}
       </select>
-      {objectsStatus === 'error' && objectsError && <div className="error">{objectsError}</div>}
+      {objectsStatus === 'error' && objectsError && <div className="error" role="alert">{objectsError}</div>}
     </div>
   );
 };

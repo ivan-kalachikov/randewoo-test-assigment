@@ -45,3 +45,27 @@ const createObjectsMock = (mock) => {
     }));
 };
 export default createObjectsMock;
+
+const dataForTests = [
+  {
+    timestamp: 1625483071276,
+    coordinates: {
+      latitude: 55.7537583,
+      longitude: 37.6198118,
+    },
+  }, {
+    timestamp: 1625485071456,
+    coordinates: {
+      latitude: 55.7537122,
+      longitude: 37.6198234,
+    },
+  }, {
+    timestamp: 1625453371124,
+    coordinates: {
+      latitude: 55.7537523,
+      longitude: 37.6198345,
+    },
+  },
+];
+
+export { dataForTests };

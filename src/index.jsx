@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import App from './App';
-import './locales/i18n';
+import initApp from './initMockedApp';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root'),
-);
+const init = async () => {
+  ReactDOM.render(
+    <React.StrictMode>
+      {await initApp()}
+    </React.StrictMode>,
+    document.getElementById('root'),
+  );
+};
+
+init();
