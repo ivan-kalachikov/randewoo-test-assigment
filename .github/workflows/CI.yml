@@ -33,7 +33,7 @@ jobs:
       - name: npm install
         # Install and build project
         run: |
-          npm ci
+          npm install
         # Add environment variables
         env:
           CI: true
