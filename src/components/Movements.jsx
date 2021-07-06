@@ -39,7 +39,7 @@ const Movements = ({
         </thead>
         <tbody ref={tbodyRef}>
           {movementsList.map((item) => (
-            <tr role="row" key={item.timestamp}>
+            <tr key={item.timestamp}>
               <td>{getFormattedDate(item.timestamp)}</td>
               <td>{item?.coordinates?.latitude}</td>
               <td>{item?.coordinates?.longitude}</td>
