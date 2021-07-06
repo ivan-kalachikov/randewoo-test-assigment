@@ -24,23 +24,25 @@ const genNewCoordinate = (key) => {
 const genRequestDelay = () => MIN_MOVEMENT_DELAY
       + (Math.random() * MAX_MOVEMENT_DELAY - MIN_MOVEMENT_DELAY);
 
-const genData = () => {
+const genData = (id) => {
   data.push({
+    id,
     timestamp: Date.now(),
     coordinates: {
       latitude: genNewCoordinate('latitude'),
       longitude: genNewCoordinate('longitude'),
     },
   });
-  return data;
+  return data.filter(({ id: itemId }) => itemId === id);
 };
 
 const createObjectsMock = (mock) => {
   mock
     .onGet(/\/api\/v1\/objects\/\d*\/movements/)
-    .reply(() => new Promise((resolve) => {
+    .reply(({ url }) => new Promise((resolve) => {
+      const id = url.match(/objects\/(\d*)\/movements/)[1];
       setTimeout(() => {
-        resolve([200, genData()]);
+        resolve([200, genData(id)]);
       }, genRequestDelay());
     }));
 };

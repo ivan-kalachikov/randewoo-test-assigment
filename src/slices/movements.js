@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes';
+import { actions as objectsActions } from './objects';
 import { MOVEMENTS_REQUEST_DELAY } from '../constants';
 
 export const getMovements = createAsyncThunk(
@@ -42,6 +43,9 @@ const objectsSlice = createSlice({
     },
   },
   extraReducers: {
+    [objectsActions.setCurrentObjectId]: (state) => {
+      state.list = [];
+    },
     [getMovements.pending]: (state) => {
       state.status = 'pending';
     },
