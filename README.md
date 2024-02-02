@@ -1,4 +1,4 @@
-# Randewoo Test Assessment
+# Randewoo Test Assigment
 
 ![CI](https://github.com/Ivankalachikov/randewoo-test-assessment/workflows/CI/badge.svg)
 
